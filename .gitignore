@@ -1,0 +1,21 @@
+node_modules# Ignore installers & binaries
+*.exe
+*.msi
+*.bat
+*.cmd
+*.ps1
+
+# Ignore node/npm core files
+corepack
+node.exe
+npm
+npx
+node_modules/
+
+# VSCode settings
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
+
