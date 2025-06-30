@@ -1,13 +1,24 @@
-function changeMessage() {
-  const greeting = document.getElementById("greeting");
-  greeting.innerText = "You're doing amazing! 🎯 Keep going!";
-}
-const colors = ["#f5f5f5", "#ffd6e0", "#c3f0ca", "#ffecd1", "#d0e8f2", "#fce38a"];
+const addTaskBtn = document.getElementById("addTaskBtn");
+const taskInput = document.getElementById("taskInput");
+const taskList = document.getElementById("taskList");
 
-function changeColor() {
-  const randomIndex = Math.floor(Math.random() * colors.length);
-  const randomColor = colors[randomIndex];
-  document.body.style.backgroundColor = randomColor;
+addTaskBtn.addEventListener("click", () => {
+  const taskText = taskInput.value.trim();
 
-  console.log("Background changed to:", randomColor);
-}
+  if (taskText === "") {
+    alert("Please enter a task.");
+    return;
+  }
+
+  const li = document.createElement("li");
+  li.textContent = taskText;
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "Delete";
+  deleteBtn.onclick = () => li.remove();
+
+  li.appendChild(deleteBtn);
+  taskList.appendChild(li);
+
+  taskInput.value = "";
+});
