@@ -1,24 +1,33 @@
-const addTaskBtn = document.getElementById("addTaskBtn");
-const taskInput = document.getElementById("taskInput");
-const taskList = document.getElementById("taskList");
+const form = document.getElementById("feedbackForm");
+const nameInput = document.getElementById("name");
+const emailInput = document.getElementById("email");
+const messageInput = document.getElementById("message");
+const status = document.getElementById("formStatus");
 
-addTaskBtn.addEventListener("click", () => {
-  const taskText = taskInput.value.trim();
+form.addEventListener("submit", function (e) {
+  e.preventDefault(); // Prevent default form submission (page reload)
 
-  if (taskText === "") {
-    alert("Please enter a task.");
+  const name = nameInput.value.trim();
+  const email = emailInput.value.trim();
+  const message = messageInput.value.trim();
+
+  // Basic validation
+  if (name === "" || email === "" || message === "") {
+    status.textContent = "⚠️ Please fill in all fields.";
+    status.style.color = "crimson";
     return;
   }
 
-  const li = document.createElement("li");
-  li.textContent = taskText;
+  if (!email.includes("@") || !email.includes(".")) {
+    status.textContent = "⚠️ Please enter a valid email address.";
+    status.style.color = "crimson";
+    return;
+  }
 
-  const deleteBtn = document.createElement("button");
-  deleteBtn.textContent = "Delete";
-  deleteBtn.onclick = () => li.remove();
+  // If all good
+  status.textContent = "✅ Thank you for your feedback!";
+  status.style.color = "green";
 
-  li.appendChild(deleteBtn);
-  taskList.appendChild(li);
-
-  taskInput.value = "";
+  // Optional: clear form
+  form.reset();
 });
