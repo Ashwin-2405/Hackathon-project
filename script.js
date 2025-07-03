@@ -1,33 +1,54 @@
-const form = document.getElementById("feedbackForm");
-const nameInput = document.getElementById("name");
-const emailInput = document.getElementById("email");
-const messageInput = document.getElementById("message");
-const status = document.getElementById("formStatus");
+// Get references to DOM elements
+const addTaskBtn = document.getElementById("addTaskBtn");
+const taskInput = document.getElementById("taskInput");
+const taskList = document.getElementById("taskList");
 
-form.addEventListener("submit", function (e) {
-  e.preventDefault(); // Prevent default form submission (page reload)
+// Load tasks from localStorage when page loads
+window.onload = function () {
+  const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  savedTasks.forEach(task => addTaskToDOM(task));
+};
 
-  const name = nameInput.value.trim();
-  const email = emailInput.value.trim();
-  const message = messageInput.value.trim();
+// Add task when button is clicked
+addTaskBtn.addEventListener("click", () => {
+  const taskText = taskInput.value.trim();
 
-  // Basic validation
-  if (name === "" || email === "" || message === "") {
-    status.textContent = "⚠️ Please fill in all fields.";
-    status.style.color = "crimson";
+  if (taskText === "") {
+    alert("Please enter a task.");
     return;
   }
 
-  if (!email.includes("@") || !email.includes(".")) {
-    status.textContent = "⚠️ Please enter a valid email address.";
-    status.style.color = "crimson";
-    return;
-  }
-
-  // If all good
-  status.textContent = "✅ Thank you for your feedback!";
-  status.style.color = "green";
-
-  // Optional: clear form
-  form.reset();
+  addTaskToDOM(taskText);
+  saveTask(taskText);
+  taskInput.value = "";
 });
+
+// Create <li> element and add to the task list
+function addTaskToDOM(taskText) {
+  const li = document.createElement("li");
+  li.textContent = taskText;
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "Delete";
+  deleteBtn.onclick = () => {
+    li.remove();
+    deleteTask(taskText);
+  };
+
+  li.appendChild(deleteBtn);
+  taskList.appendChild(li);
+}
+
+// Save a new task to localStorage
+function saveTask(taskText) {
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  tasks.push(taskText);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+// Delete a task from localStorage
+function deleteTask(taskText) {
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  tasks = tasks.filter(task => task !== taskText);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
